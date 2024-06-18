@@ -43,7 +43,7 @@ export default function Nav() {
             label={auth ? 'Logout' : 'Login'}
           />
         </FormGroup>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ backgroundColor: '#625671' }}>
           <Toolbar>
             <IconButton
               size="large"
@@ -55,7 +55,7 @@ export default function Nav() {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Photos
+              MEE - ai 
             </Typography>
             {auth && (
               <div>

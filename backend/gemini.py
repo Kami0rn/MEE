@@ -55,7 +55,7 @@ def chat():
         return jsonify({"error": "No user input provided"}), 400
 
     # Define the prompt template
-    prompt_template = "From this word '{user_input}' I want you to answer like human talk to person who facing with depression. In term of friend with no judging. using user user_input language as respond language"
+    prompt_template = "From this word '{user_input}' I want you to answer like human talk to person who facing with depression. In term of friend with no judging. using user user_input language as respond language , Answer it with in 80 token"
 
     # Maintain conversation history
     conversation_history = data.get('conversation_history', "")

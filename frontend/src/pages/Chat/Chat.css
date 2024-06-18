@@ -1,3 +1,83 @@
 body{
     height: 70vh;
 }
+.respondBG{
+    background-color: rgb(213, 180, 198);
+    max-width: 300px;
+    border-radius: 30px 30px 30px 0px ;
+    margin-top: 5%;
+    margin-left : 2%;
+    
+}
+
+.respondBG h2 {
+    margin-left: 20px ;
+    padding-top: 20px;
+}
+.respondBG div {
+    padding: 10px;
+}
+
+.sendBG{
+    background-color: grey;
+    max-width: 300px;
+    border-radius: 30px 30px 0px 30px ;
+    margin-top: 5%;
+    margin-left: auto; /* Align to the right */
+    margin-right: 2%; /* Reset margin-right to 0 */
+}
+
+
+.sendBG h2 {
+    margin-left: 20px ;
+    padding-top: 20px;
+}
+.sendBG div {
+    padding: 10px;
+}
+
+.textArea {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f0f0f0;
+    padding: 0%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-content: center;
+    height: 10%;
+    max-height: 80px;
+  }
+
+
+  .textArea form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+  
+  .textArea label {
+    flex: 1;
+    
+  }
+  
+  .textArea input {
+    flex: 1;
+    margin: 0%;
+    font-size: 16px;
+    border: none;
+    height: 5vh; /* Set height as needed */
+    margin-left: 5%;
+    width: 80%;
+    border-radius:15px;
+}
+
+  
+  .textArea button {
+    border: none;
+    background-color: bisque;
+    height: 5vh;
+    width: 10%;
+    margin-right: 5%;
+    border-radius:10px;
+  }

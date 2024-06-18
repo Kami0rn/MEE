@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import Nav from '../Nav/Nav';
-import './Chat.css';
-import { CreateChat } from '../../service/http/Chat'; // Adjust the path as per your actual structure
+import React, { useState } from "react";
+import Nav from "../Nav/Nav";
+import "./Chat.css";
+import { CreateChat } from "../../service/http/Chat"; // Adjust the path as per your actual structure
 
 interface ChatFormData {
   user_input: string;
@@ -11,42 +11,60 @@ interface ChatFormData {
 function Chat() {
   const [conversation, setConversation] = useState("");
   const [aiResponse, setAiResponse] = useState("");
+  const [conversationHistory, setConversationHistory] = useState<string[]>([]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData: ChatFormData = {
       user_input: conversation,
-      conversation_history: "" // You can initialize or handle conversation history as needed
+      conversation_history: conversationHistory.join("\n"),
     };
 
-    // Call CreateChat function
     const response = await CreateChat(formData);
 
     if (response && response.ai_response) {
+      const updatedHistory = [
+        ...conversationHistory,
+        `You: ${conversation}`,
+        `AI: ${response.ai_response}`,
+      ];
+      setConversationHistory(updatedHistory);
       setAiResponse(response.ai_response);
-      console.log(response.ai_response)
+      setConversation(""); // Reset input field
 
-      // Optionally, you can reset the input field after successful submission
-      setConversation("");
     } else {
-      console.log('Failed to get AI response');
+      console.log("Failed to get AI response");
       // Handle error state if needed
     }
-  }
+  };
 
   return (
     <div>
       <Nav />
       <div className="chat-container">
-        <body>{aiResponse}</body>
+        {/* Conditionally render sendBG */}
+        {conversation && (
+          <div className="sendBG">
+            <h2>U</h2>
+            <div>{conversation}</div>
+          </div>
+        )}
+        {/* Conditionally render respondBG */}
+        {aiResponse && (
+          <div className="respondBG">
+            <h2>MEE</h2>
+            <div>{aiResponse}</div>
+          </div>
+        )}
       </div>
-      <div className='textArea'>
+      <div className="textArea">
         <form onSubmit={handleSubmit}>
-          <label>Enter your Message:
-            <input 
-              type="text" 
+          <label>
+            <input
+              type="text"
               value={conversation}
+              placeholder="Enter your Message:"
               onChange={(e) => setConversation(e.target.value)}
             />
           </label>
