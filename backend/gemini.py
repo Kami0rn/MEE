@@ -2,6 +2,7 @@ import os
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import google.generativeai as genai
+from flask_cors import CORS
 
 # Load environment variables from the .env file
 load_dotenv()
@@ -14,6 +15,7 @@ model = genai.GenerativeModel(model_name="gemini-1.5-flash")
 
 # Create the Flask application
 app = Flask(__name__)
+CORS(app)
 
 # Initialize chat status (enabled by default)
 chat_enabled = True
@@ -81,4 +83,4 @@ def chat():
     return jsonify({"ai_response": ai_response, "conversation_history": conversation_history})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='127.0.0.1', port=5000)
