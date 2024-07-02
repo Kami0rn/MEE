@@ -10,7 +10,9 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	openai "github.com/sashabaranov/go-openai"
+	"google.golang.org/api/option"
+	language "cloud.google.com/go/language/apiv1"
+	languagepb "cloud.google.com/go/language/apiv1/languagepb"
 )
 
 var chatEnabled = true
@@ -20,11 +22,6 @@ func main() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Error loading .env file")
-	}
-
-	apiKey := os.Getenv("OPENAI_API_KEY")
-	if apiKey == "" {
-		log.Fatalf("OPENAI_API_KEY not set in .env file")
 	}
 
 	// Create the Gin application
@@ -79,6 +76,10 @@ func main() {
 			return
 		}
 
+		// Define the prompt template
+		promptTemplate := "From this word '%s' I want you to answer like human talk to person who facing with depression. In term of friend with no judging. using user user_input language as respond language , Answer it with in 80 token"
+		prompt := fmt.Sprintf(promptTemplate, json.UserInput)
+
 		// Update conversation history
 		if json.ConversationHistory != "" {
 			json.ConversationHistory += fmt.Sprintf("\nYou: %s", json.UserInput)
@@ -86,13 +87,33 @@ func main() {
 			json.ConversationHistory = fmt.Sprintf("You: %s", json.UserInput)
 		}
 
-		// Generate a response from the AI model
-		aiResponse, err := callOpenAIModel(apiKey, json.UserInput, json.ConversationHistory)
+		// Generate a response from the model with the formatted prompt and conversation history
+		fullPrompt := fmt.Sprintf("%s\n\n%s", json.ConversationHistory, prompt)
+
+		// Call Google Cloud Natural Language API
+		ctx := context.Background()
+		client, err := language.NewClient(ctx, option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")))
 		if err != nil {
-			log.Printf("AI model error: %v", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to call AI model", "details": err.Error()})
+			log.Fatalf("Failed to create natural language service: %v", err)
+		}
+
+		req := &languagepb.AnalyzeSentimentRequest{
+			Document: &languagepb.Document{
+				Type:    languagepb.Document_PLAIN_TEXT,
+				Source:  &languagepb.Document_Content{Content: fullPrompt},
+				Language: "en",
+			},
+		}
+
+		resp, err := client.AnalyzeSentiment(ctx, req)
+		if err != nil {
+			log.Printf("AnalyzeSentiment error: %v", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to analyze sentiment", "details": err.Error()})
 			return
 		}
+
+		// Parse the AI's response (example: using sentiment score as a simple response)
+		aiResponse := fmt.Sprintf("Sentiment score: %v", resp.DocumentSentiment.Score)
 
 		// Update conversation history with AI response
 		json.ConversationHistory += fmt.Sprintf("\nAI: %s", aiResponse)
@@ -106,42 +127,4 @@ func main() {
 
 	// Run the server
 	r.Run("127.0.0.1:5000")
-}
-
-func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, error) {
-	ctx := context.Background()
-	client := openai.NewClient(apiKey)
-
-	// Construct the messages for the chat completion request
-	messages := []openai.ChatCompletionMessage{
-		{
-			Role:    openai.ChatMessageRoleSystem,
-			Content: "You are a helpful assistant.",
-		},
-		{
-			Role:    openai.ChatMessageRoleUser,
-			Content: conversationHistory,
-		},
-		{
-			Role:    openai.ChatMessageRoleUser,
-			Content: userInput,
-		},
-	}
-
-	// Call the OpenAI API
-	resp, err := client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
-		Model:    "gpt-3.5-turbo",
-		Messages: messages,
-		MaxTokens: 30,
-	})
-
-	if err != nil {
-		return "", fmt.Errorf("failed to generate response: %v", err)
-	}
-
-	if len(resp.Choices) == 0 {
-		return "", fmt.Errorf("no response generated")
-	}
-
-	return resp.Choices[0].Message.Content, nil
 }
