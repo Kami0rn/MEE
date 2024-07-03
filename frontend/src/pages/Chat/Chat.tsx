@@ -68,7 +68,7 @@ function Chat() {
               onChange={(e) => setConversation(e.target.value)}
             />
           </label>
-          <button type="submit">Submit</button>
+          <button type="submit">send</button>
         </form>
       </div>
     </div>
