@@ -1,4 +1,6 @@
 // service/http/Chat.ts
+const serverAddress = 'http://127.0.0.1:5000';
+
 export interface ChatFormData {
   user_input: string;
   conversation_history: string;
@@ -6,7 +8,7 @@ export interface ChatFormData {
 
 export const CreateChat = async (formData: ChatFormData) => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/chat', {
+    const response = await fetch(`${serverAddress}/chat`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

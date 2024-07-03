@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
 import { AdminTog, AdminToggle } from '../../service/http/Admin'; // Adjust the import path as necessary
 import { FetchChatStatus } from '../../service/http/Admin'; // Ensure this is correctly imported
 
@@ -6,6 +7,7 @@ function Admin() {
   const [chatEnabled, setChatEnabled] = useState(true);
   const [pin, setPin] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   useEffect(() => {
     const initializeChatStatus = async () => {
@@ -35,6 +37,10 @@ function Admin() {
     }
   };
 
+  const redirectToChat = () => {
+    navigate('/chat'); // Use the navigate function to redirect to /chat
+  };
+
   return (
     <div>
       <h1>Admin Panel</h1>
@@ -58,8 +64,11 @@ function Admin() {
           <button onClick={() => handleToggle('enable')} disabled={chatEnabled}>
             Enable Chat
           </button>
+           
         </div>
+        
       )}
+      <button onClick={redirectToChat}>Go to Chat</button>
     </div>
   );
 }

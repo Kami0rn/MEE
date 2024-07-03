@@ -1,3 +1,5 @@
+const serverAddress = 'http://127.0.0.1:5000';
+
 export interface AdminToggle {
     action: string;
   }
@@ -5,7 +7,7 @@ export interface AdminToggle {
 
 export const AdminTog = async (action: AdminToggle) => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/chat_toggle', {
+    const response = await fetch(`${serverAddress}/chat_toggle`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -25,7 +27,7 @@ export const AdminTog = async (action: AdminToggle) => {
 
 export const FetchChatStatus = async (): Promise<boolean> => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/status', {
+    const response = await fetch(`${serverAddress}/status`, {
       method: 'GET'
     });
     if (!response.ok) {

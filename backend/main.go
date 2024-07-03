@@ -15,6 +15,8 @@ import (
 	openai "github.com/sashabaranov/go-openai"
 )
 
+const serverAddress = "127.0.0.1:5000" 
+
 var chatEnabled = true
 
 func main() {
@@ -117,7 +119,7 @@ func main() {
 	})
 
 	// Run the server
-	r.Run("127.0.0.1:5000")
+	r.Run(serverAddress)
 }
 
 func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, error) {
