@@ -4,6 +4,8 @@ import { FetchChatStatus } from '../../service/http/Admin'; // Ensure this is co
 
 function Admin() {
   const [chatEnabled, setChatEnabled] = useState(true);
+  const [pin, setPin] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const initializeChatStatus = async () => {
@@ -14,7 +16,6 @@ function Admin() {
     initializeChatStatus();
   }, []);
 
-  // Define handleToggle here
   const handleToggle = async (action: 'enable' | 'disable') => {
     const adminAction: AdminToggle = {
       action: action,
@@ -26,15 +27,39 @@ function Admin() {
     }
   };
 
+  const handlePinSubmit = () => {
+    if (pin === '30130') {
+      setIsAuthenticated(true);
+    } else {
+      alert('Incorrect PIN. Please try again.');
+    }
+  };
+
   return (
     <div>
       <h1>Admin Panel</h1>
-      <button onClick={() => handleToggle('disable')} disabled={!chatEnabled}>
-        Disable Chat
-      </button>
-      <button onClick={() => handleToggle('enable')} disabled={chatEnabled}>
-        Enable Chat
-      </button>
+      {!isAuthenticated ? (
+        <div>
+          <p>Please enter the PIN to access the admin panel:</p>
+          <input
+            type="password"
+            value={pin}
+            onChange={(e) => setPin(e.target.value)}
+            placeholder="Enter PIN"
+          />
+          <button onClick={handlePinSubmit}>Submit</button>
+        </div>
+      ) : (
+        <div>
+          <p>Chat is currently {chatEnabled ? 'enabled' : 'disabled'}</p>
+          <button onClick={() => handleToggle('disable')} disabled={!chatEnabled}>
+            Disable Chat
+          </button>
+          <button onClick={() => handleToggle('enable')} disabled={chatEnabled}>
+            Enable Chat
+          </button>
+        </div>
+      )}
     </div>
   );
 }
