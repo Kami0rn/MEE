@@ -142,7 +142,7 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
     resp, err := client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
         Model:     "gpt-3.5-turbo",
         Messages:  messages,
-        MaxTokens: 150, // Adjusted for potentially longer responses
+        MaxTokens: 50, // Adjusted for potentially longer responses
     })
 
     if err != nil {

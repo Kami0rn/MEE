@@ -60,8 +60,8 @@ function Chat() {
     if (response && response.ai_response) {
       const updatedHistory = [
         ...conversationHistory,
-        `You: ${conversation}`,
-        `AI: ${response.ai_response}`,
+        ` ${conversation}`,
+        ` ${response.ai_response}`,
       ];
       setConversationHistory(updatedHistory);
       setAiResponse(response.ai_response);
@@ -73,13 +73,18 @@ function Chat() {
 
   return (
     <div>
+      
       <Nav />
       <div className="chat-container">
         {conversationHistory.map((msg, index) => (
           <div key={index} className={index % 2 === 0 ? "sendBG" : "respondBG"}>
             {index % 2 !== 0 && (
               <div className="message-flex">
+                {/* <img src={width_194} alt="AI" className="ai-profile-icon" /> */}
+                <div className='flex-in'>
                 <img src={width_194} alt="AI" className="ai-profile-icon" />
+                <h4>MEE</h4>
+                </div>
                 <div>{msg}</div>
               </div>
             )}
@@ -97,7 +102,7 @@ function Chat() {
             <input
               type="text"
               value={conversation}
-              placeholder="Enter your Message:"
+              placeholder="Say some thing:"
               onChange={(e) => setConversation(e.target.value)}
                // Disable input if chat is not available
             />

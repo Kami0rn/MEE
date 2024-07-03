@@ -10,21 +10,37 @@ body{
     
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');
+
+.sendBG, .respondBG {
+  font-family: 'Schoolbell', cursive;
+}
+
+
 .respondBG h2 {
     margin-left: 20px ;
     padding-top: 20px;
+
 }
 .respondBG div {
     padding: 10px;
 }
 
 .sendBG{
-    background-color: grey;
+    background-color: #c13f5f;
     max-width: 300px;
     border-radius: 30px 30px 0px 30px ;
     margin-top: 5%;
     margin-left: auto; /* Align to the right */
     margin-right: 2%; /* Reset margin-right to 0 */
+    color: white;
+}
+
+.flex-in {
+  display: flex;
+}
+.flex-in h4 {
+  color: #c13f5f;
 }
 
 
@@ -75,11 +91,12 @@ body{
   
   .textArea button {
     border: none;
-    background-color: bisque;
+    background-color: #c13f5f;
     height: 5vh;
-    width: 10%;
+    width: 20%;
     margin-right: 5%;
     border-radius:10px;
+    color: white;
   }
 
 
@@ -111,15 +128,20 @@ body{
 }
 
 .respondBG {
-  display: flex; /* Aligns the icon and the text horizontally */
-  align-items: center; /* Aligns items vertically in the center */
-  /* Existing styles... */
+  background-color: white; /* White background for AI messages */
+  max-width: 300px;
+  border-radius: 30px 30px 30px 0;
+  margin-top: 5%;
+  margin-left: 2%; /* Aligns the bubble to the left */
+  padding: 10px;
+  color: black; /* Text color for readability */
 }
 
 
 .nav-container {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   z-index: 1000; /* Ensures it stays on top of other content */
   background-color: #fff; /* Assuming you want a solid background */
@@ -128,8 +150,12 @@ body{
 
 .chat-container {
   padding-top: 60px; /* Adjust this value based on the actual height of your nav bar */
-  height: calc(100vh - 60px); /* Adjust to avoid overlapping with the text area */
+  height: calc(100vh - 60px); 
+  overflow-y: auto;
+  /* Adjust to avoid overlapping with the text area */
 }
+
+
 
 
 

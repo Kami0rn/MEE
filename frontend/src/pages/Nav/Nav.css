@@ -6,8 +6,18 @@
     border: solid;
     border-color: black;
     border-width: 2px;
+    border-radius: 0px 0px 15px 15px;
     /* This will push the menu icon and user icon to the edges */
 }
-.var {
 
-}
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');
+
+body, h1, h2, h3, h4, h5, h6, p, a, button, input {
+    font-family: 'Schoolbell', cursive;
+  }
+
+
+  .schoolbell {
+    font-family: 'Schoolbell', cursive;
+  }
+  
