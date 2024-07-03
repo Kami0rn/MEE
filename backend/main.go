@@ -113,7 +113,7 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
     client := openai.NewClient(apiKey)
 
     // Define the instruction to prepend
-    instruction := "From this word: " + userInput + "Pleas answer with next user input language and I want you to answer like a human talking to a person who is facing depression, in terms of a friend with no judging."
+    instruction :=   userInput 
 
     // Add the instruction to the conversation history
     if conversationHistory != "" {
@@ -124,10 +124,10 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
 
     // Construct the messages for the chat completion request
     messages := []openai.ChatCompletionMessage{
-        // {
-        //     Role:    openai.ChatMessageRoleSystem,
-        //     Content: "Plead answer with next user input language",
-        // },
+        {
+            Role:    openai.ChatMessageRoleSystem,
+            Content: "From next step after this . Pleas answer with next input language and I want you to answer like a human talking to a person who is facing depression, in terms of a friend with no judging. And add much more emoji like human talk",
+        },
         // {
         //     Role:    openai.ChatMessageRoleUser,
         //     Content: conversationHistory,
@@ -142,7 +142,7 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
     resp, err := client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
         Model:     "gpt-3.5-turbo",
         Messages:  messages,
-        MaxTokens: 50, // Adjusted for potentially longer responses
+        MaxTokens: 150, // Adjusted for potentially longer responses
     })
 
     if err != nil {
