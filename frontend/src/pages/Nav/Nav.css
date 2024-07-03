@@ -1,0 +1,13 @@
+.box {
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: solid;
+    border-color: black;
+    border-width: 2px;
+    /* This will push the menu icon and user icon to the edges */
+}
+.var {
+
+}

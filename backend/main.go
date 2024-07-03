@@ -126,7 +126,7 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
     messages := []openai.ChatCompletionMessage{
         {
             Role:    openai.ChatMessageRoleSystem,
-            Content: "From next step after this . Pleas answer with next input language and I want you to answer like a human talking to a person who is facing depression, in terms of a friend with no judging. And add much more emoji like human talk",
+            Content: "From next step after this . Pleas answer with next input language and I want you to answer like a human talking to a person who is facing depression, in terms of a friend with no judging. And add much more emoji like human talk and use less 'I'm sorry to hear that'",
         },
         // {
         //     Role:    openai.ChatMessageRoleUser,
