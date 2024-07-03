@@ -49,7 +49,7 @@ export default function Nav() {
             aria-label="menu"
             sx={{ mr: 2, color: "black" }}
           >
-            <MenuIcon />
+            {/* <MenuIcon /> */}
           </IconButton>
           <Typography
             variant="h6"
@@ -69,7 +69,7 @@ export default function Nav() {
                 onClick={handleMenu}
                 sx={{ color: "black" }}
               >
-                <AccountCircle />
+                <MenuIcon />
               </IconButton>
               <Menu
                 id="menu-appbar"
