@@ -155,6 +155,13 @@ body{
   /* Adjust to avoid overlapping with the text area */
 }
 
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
 
 
 

@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -22,10 +24,14 @@ func main() {
 		log.Fatalf("Error loading .env file")
 	}
 
-	apiKey := os.Getenv("OPENAI_API_KEY")
-	if apiKey == "" {
-		log.Fatalf("OPENAI_API_KEY not set in .env file")
+	apiKey1 := os.Getenv("OPENAI_API_KEY_1")
+	apiKey2 := os.Getenv("OPENAI_API_KEY_2")
+	if apiKey1 == "" || apiKey2 == "" {
+		log.Fatalf("Both OPENAI_API_KEY_1 and OPENAI_API_KEY_2 must be set in .env file")
 	}
+
+	// Seed the random number generator
+	rand.Seed(time.Now().UnixNano())
 
 	// Create the Gin application
 	r := gin.Default()
@@ -86,8 +92,14 @@ func main() {
 			json.ConversationHistory = fmt.Sprintf("You: %s", json.UserInput)
 		}
 
+		// Randomly select an API key
+		selectedAPIKey := apiKey1
+		if rand.Intn(2) == 1 {
+			selectedAPIKey = apiKey2
+		}
+
 		// Generate a response from the AI model
-		aiResponse, err := callOpenAIModel(apiKey, json.UserInput, json.ConversationHistory)
+		aiResponse, err := callOpenAIModel(selectedAPIKey, json.UserInput, json.ConversationHistory)
 		if err != nil {
 			log.Printf("AI model error: %v", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to call AI model", "details": err.Error()})
@@ -128,10 +140,6 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
             Role:    openai.ChatMessageRoleSystem,
             Content: "From next step after this . Pleas answer with next input language and I want you to answer like a human talking to a person who is facing depression, in terms of a friend with no judging. And add much more emoji like human talk and use less 'I'm sorry to hear that'",
         },
-        // {
-        //     Role:    openai.ChatMessageRoleUser,
-        //     Content: conversationHistory,
-        // },
         {
             Role:    openai.ChatMessageRoleUser,
             Content: instruction,
@@ -142,7 +150,7 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
     resp, err := client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
         Model:     "gpt-3.5-turbo",
         Messages:  messages,
-        MaxTokens: 50, // Adjusted for potentially longer responses
+        MaxTokens: 350, // Adjusted for potentially longer responses
     })
 
     if err != nil {
@@ -155,4 +163,3 @@ func callOpenAIModel(apiKey, userInput, conversationHistory string) (string, err
 
     return resp.Choices[0].Message.Content, nil
 }
-
