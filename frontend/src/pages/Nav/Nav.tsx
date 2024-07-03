@@ -8,6 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Swal from 'sweetalert2';
 import "./Nav.css";
 
 export default function Nav() {
@@ -20,6 +21,22 @@ export default function Nav() {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleContactClick = () => {
+    Swal.fire({
+      title: 'Contact Information',
+      text: 'LineID : @pypuni  ,  Facebook : กิตติพัทธ์ ทิว',
+      icon: 'info',
+      confirmButtonText: 'Close',
+      confirmButtonColor: '#3085d6',
+    });
+    handleClose(); // Close the menu
+  };
+
+  const handleFeedbackClick = () => {
+    handleClose(); // Close the menu
+    window.open('https://docs.google.com/forms/d/e/1FAIpQLScsTzm2fjOKQmw53C9GEPF6Yb2uLrhjUgu3TtWco2Ypp4PwwQ/viewform?usp=sf_link', '_blank');
   };
 
   return (
@@ -69,8 +86,8 @@ export default function Nav() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Feedback</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleFeedbackClick}>Feedback</MenuItem>
+                <MenuItem onClick={handleContactClick}>My Contact</MenuItem>
               </Menu>
             </div>
           )}
